@@ -159,6 +159,7 @@ class mk(object):
         # This is done for the case that -s is passed
         if select_device is True:
             if sonos_device is not None:
+                print(sonos_device)
                 self.cc.select_sonos_device(sonos_device)
                 self.cc.input_device(write_to_pickle=write_to_pickle)
                 self.cc.get_devices()
