@@ -357,6 +357,15 @@ parser.add_argument(
 )
 
 parser.add_argument(
+    "--sonos-device",
+    type=str,
+    default=None,
+    help="""
+    Use this to specify a Sonos device
+    """,
+)
+
+parser.add_argument(
     "--sample-rate",
     type=int,
     default="44100",
@@ -619,6 +628,7 @@ source_url = args.source_url
 subtitles = args.subtitles
 hijack = args.hijack
 device_name = args.name
+sonos_device = arg.sonos_device
 port = args.port
 
 

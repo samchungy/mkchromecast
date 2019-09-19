@@ -212,6 +212,20 @@ class Casting(object):
         )
         self.index = input()
 
+    def select_sonos_device(self, sonos_device):
+        for (self.index, device) in enumerate(self.cclist):
+            try:
+                types = device[2]
+                if types == "Sonos":
+                    if (device[1].player_name == sonos_device):
+                        return;
+            except UnicodeEncodeError:
+                types = device[2]
+                if types == "Sonos":
+                    if (device[1].player_name == sonos_device):
+                        return;
+        
+
     def input_device(self, write_to_pickle=True):
         while True:
             try:

@@ -31,6 +31,7 @@ class mk(object):
         self.adevice = mkchromecast.__init__.adevice
         self.debug = mkchromecast.__init__.debug
         self.device_name = mkchromecast.__init__.device_name
+        self.sonos_device = mkchromecast.__init__.sonos_device
         self.videoarg = mkchromecast.__init__.videoarg
         self.youtube_url = mkchromecast.__init__.youtube_url
         self.tray = mkchromecast.__init__.tray
@@ -77,14 +78,14 @@ class mk(object):
             print(colors.success('[Done]'))
             self.start_backend(self.encoder_backend)
             self.cc.initialize_cast()
-            self.get_devices(self.select_device)
+            self.get_devices(self.select_device, self.sonos_device)
             self.cc.play_cast()
             self.show_control(self.control)
 
         elif self.youtube_url is None and self.source_url is not None:
             self.start_backend(self.encoder_backend)
             self.cc.initialize_cast()
-            self.get_devices(self.select_device)
+            self.get_devices(self.select_device, self.sonos_device)
             self.cc.play_cast()
             self.show_control(self.control)
 
@@ -93,7 +94,7 @@ class mk(object):
             import mkchromecast.audio
             mkchromecast.audio.main()
             self.cc.initialize_cast()
-            self.get_devices(self.select_device)
+            self.get_devices(self.select_device, self.sonos_device)
             self.cc.play_cast()
             self.show_control(self.control)
 
@@ -102,7 +103,7 @@ class mk(object):
         if self.youtube_url is None and self.source_url is None:
             self.start_backend(self.encoder_backend)
             self.cc.initialize_cast()
-            self.get_devices(self.select_device)
+            self.get_devices(self.select_device, self.sonos_device)
 
             print('Switching to SoundFlower...')
             inputdev()
@@ -114,7 +115,7 @@ class mk(object):
         elif self.youtube_url is None and self.source_url is not None:
             self.start_backend(self.encoder_backend)
             self.cc.initialize_cast()
-            self.get_devices(self.select_device)
+            self.get_devices(self.select_device, self.sonos_device)
             self.cc.play_cast()
             self.show_control(self.control)
 
@@ -130,7 +131,7 @@ class mk(object):
             import mkchromecast.audio
             mkchromecast.audio.main()
             self.cc.initialize_cast()
-            self.get_devices(self.select_device)
+            self.get_devices(self.select_device, self.sonos_device)
             self.cc.play_cast()
             self.show_control(self.control)
 
@@ -147,19 +148,24 @@ class mk(object):
         import mkchromecast.video
         mkchromecast.video.main()
         self.cc.initialize_cast()
-        self.get_devices(self.select_device)
+        self.get_devices(self.select_device, self.sonos_device)
         self.cc.play_cast()
         self.show_control(self.control)
 
-    def get_devices(self, select_device, write_to_pickle=True):
+    def get_devices(self, select_device, sonos_device, write_to_pickle=True):
         """Get chromecast name, and let user select one from a list if
         select_device flag is True.
         """
         # This is done for the case that -s is passed
         if select_device is True:
-            self.cc.select_a_device()
-            self.cc.input_device(write_to_pickle=write_to_pickle)
-            self.cc.get_devices()
+            if sonos_device is not None:
+                self.cc.select_sonos_device(sonos_device)
+                self.cc.input_device(write_to_pickle=write_to_pickle)
+                self.cc.get_devices()
+            else:
+                self.cc.select_a_device()
+                self.cc.input_device(write_to_pickle=write_to_pickle)
+                self.cc.get_devices()
         else:
             self.cc.get_devices()
 
@@ -231,7 +237,7 @@ class mk(object):
                                 self.controls_msg()
                     elif (key == 'a'):
                         print(self.cc.available_devices)
-                        self.get_devices(self.select_device, write_to_pickle=False)
+                        self.get_devices(self.select_device, self.sonos_device, write_to_pickle=False)
                         self.cc.play_cast()
                         self.show_control(self.control)
                     elif(key == 'p'):
