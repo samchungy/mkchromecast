@@ -628,7 +628,7 @@ source_url = args.source_url
 subtitles = args.subtitles
 hijack = args.hijack
 device_name = args.name
-sonos_device = arg.sonos_device
+sonos_device = args.sonos_device
 port = args.port
 
 
